@@ -1,7 +1,8 @@
-package com.example.chores
+package com.example.chores.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.chores.R
 
 class MainActivity : AppCompatActivity() {
 
