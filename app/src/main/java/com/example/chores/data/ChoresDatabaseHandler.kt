@@ -79,4 +79,35 @@
 
             return chore
         }
+
+        fun updateChore(chore: Chore): Int {
+
+            var db: SQLiteDatabase = writableDatabase
+            var values: ContentValues = ContentValues()
+
+            values.put(KEY_CHORE_NAME, chore.choreName)
+            values.put(KEY_CHORE_ASSIGNED_BY, chore.assignedBy)
+            values.put(KEY_CHORE_ASSIGNED_TO, chore.assignedTo)
+            values.put(KEY_CHORE_ASSIGNED_TIME, System.currentTimeMillis())
+
+            return  db.update(TABLE_NAME, values, KEY_ID + "=?", arrayOf(chore.choreId.toString()))
+        }
+
+        fun deleteChore(chore: Chore) {
+
+            var db: SQLiteDatabase = writableDatabase
+
+            db.delete(TABLE_NAME, KEY_ID + "=?", arrayOf(chore.choreId.toString()))
+            db.close()
+        }
+
+        fun getChoresCount(): Int {
+
+            var db: SQLiteDatabase = writableDatabase
+            var countQuery = "SELECT * FROM " + TABLE_NAME
+            var cursor: Cursor = db.rawQuery(countQuery, null)
+
+            return cursor.count
+
+        }
     }
