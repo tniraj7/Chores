@@ -1,6 +1,7 @@
 package com.example.chores.activity
 
 import android.app.ProgressDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -42,6 +43,8 @@ class MainActivity : AppCompatActivity() {
 
                 saveToDatabase(chore)
                 progressDialog?.cancel()
+
+                startActivity(Intent(this, ChoreListActivity::class.java))
 
             } else {
                 Toast.makeText(this, "Please enter all chore details", Toast.LENGTH_SHORT).show()
