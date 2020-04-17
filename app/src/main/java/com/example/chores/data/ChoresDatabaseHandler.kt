@@ -7,9 +7,7 @@
     import android.database.sqlite.SQLiteOpenHelper
     import android.util.Log
     import com.example.chores.model.*
-    import java.sql.Date
-    import java.text.DateFormat
-    import java.util.*
+    import kotlin.collections.ArrayList
 
 
     class ChoresDatabaseHandler(context: Context):
@@ -49,35 +47,55 @@
             db.close()
         }
 
-        fun readChore(id: Int): Chore {
-
+        fun readAChore(id: Int): Chore {
             var db: SQLiteDatabase = writableDatabase
-            var cursor: Cursor = db.query( TABLE_NAME,
-                                            arrayOf(
-                                                KEY_ID, KEY_CHORE_NAME,
-                                                KEY_CHORE_ASSIGNED_TO,
-                                                KEY_CHORE_ASSIGNED_TIME,
-                                                KEY_CHORE_ASSIGNED_BY
-                                            ),
-                                            KEY_ID + "=?",
-                                            arrayOf(id.toString()),
-                                            null, null,null, null)
-            if (cursor!= null) {
+            var cursor: Cursor = db.query(TABLE_NAME, arrayOf(KEY_ID,
+                KEY_CHORE_NAME, KEY_CHORE_ASSIGNED_BY,
+                KEY_CHORE_ASSIGNED_TIME,
+                KEY_CHORE_ASSIGNED_TO), KEY_ID + "=?", arrayOf(id.toString()),
+                null, null, null, null)
+
+
+            if (cursor != null)
                 cursor.moveToFirst()
-            }
 
             var chore = Chore()
+            chore.choreId = cursor.getInt(cursor.getColumnIndex(KEY_ID))
             chore.choreName = cursor.getString(cursor.getColumnIndex(KEY_CHORE_NAME))
             chore.assignedTo = cursor.getString(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TO))
-            chore.assignedBy = cursor.getString(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_BY))
             chore.timeAssigned = cursor.getLong(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TIME))
+            chore.assignedBy = cursor.getString(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_BY))
 
-            var dateFormat: java.text.DateFormat = DateFormat.getDateInstance()
-            var formattedDate = dateFormat.format(
-                                    Date(cursor.getLong(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TIME))).time
-                                )
+
 
             return chore
+
+        }
+
+        fun readChores(): ArrayList<Chore> {
+
+            var list: ArrayList<Chore> = ArrayList()
+
+            var db: SQLiteDatabase = readableDatabase
+            var selectAllQuery = "SELECT * FROM " + TABLE_NAME
+            var cursor: Cursor = db.rawQuery( selectAllQuery, null)
+
+            if (cursor!= null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        var chore = Chore()
+                        chore.choreName = cursor.getString(cursor.getColumnIndex(KEY_CHORE_NAME))
+                        chore.assignedTo = cursor.getString(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TO))
+                        chore.assignedBy = cursor.getString(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_BY))
+                        chore.timeAssigned = cursor.getLong(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TIME))
+
+                        list.add(chore)
+
+                    } while (cursor.moveToNext())
+                }
+            }
+
+            return list
         }
 
         fun updateChore(chore: Chore): Int {
