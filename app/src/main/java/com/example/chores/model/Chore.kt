@@ -1,5 +1,8 @@
 package com.example.chores.model
 
+import java.text.DateFormat
+import java.util.*
+
 class Chore() {
 
     var choreName: String? = null
@@ -15,4 +18,17 @@ class Chore() {
         this.timeAssigned = timeAssigned
         this.choreId = choreId
     }
+
+    fun showHumanReadableDate(timeAssigned: Long): String {
+
+        var dateFormat: java.text.DateFormat = DateFormat.getDateInstance()
+        var formattedDate = dateFormat.format(Date(timeAssigned).time)
+
+        return  " Created At: ${formattedDate}"
+    }
+
+    override fun toString(): String {
+        return "Chore(choreName: $choreName, assignedBy: $assignedBy, assignedTo: $assignedTo, timeAssigned: $timeAssigned, id: $choreId )"
+    }
+
 }
