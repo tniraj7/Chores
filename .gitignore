@@ -24,8 +24,8 @@ hs_err_pid*
 sqlandroid.xml
 chores
 chores.db
-.gradle
-.idea
+.gradle/*
+.idea/*
 Chores-app.iml
 Chores-Chores.iml
 app.iml
