@@ -2,6 +2,9 @@ package com.example.chores.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chores.R
@@ -46,7 +49,18 @@ class ChoreListActivity : AppCompatActivity() {
 
         recyclerViewId.layoutManager = layoutManager
         recyclerViewId.adapter = adapter
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
+        menuInflater.inflate(R.menu.top_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.add_menu_button) {
+            Log.d("Item Clicekd", "Yes")
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
