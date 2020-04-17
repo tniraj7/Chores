@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         dbHandler = ChoresDatabaseHandler(this)
         progressDialog = ProgressDialog(this)
 
+        checkDB()
+
         saveChoreButtonId.setOnClickListener {
             progressDialog?.setMessage("Saving ..")
 
@@ -58,5 +60,12 @@ class MainActivity : AppCompatActivity() {
         dbHandler!!.createChore(chore)
         Toast.makeText(this, "Saved successfully", Toast.LENGTH_SHORT).show()
         Log.d("Saved successfully: ", chore?.choreName)
+    }
+
+    fun checkDB() {
+        if(dbHandler!!.getChoresCount() > 0) {
+            var intent = Intent(this, ChoreListActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
