@@ -1,12 +1,15 @@
 package com.example.chores.activity
 
 import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +18,12 @@ import com.example.chores.data.ChoreListAdapter
 import com.example.chores.data.ChoresDatabaseHandler
 import com.example.chores.model.Chore
 import kotlinx.android.synthetic.main.activity_chore_list.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.activity_main.view.assignToId
+import kotlinx.android.synthetic.main.activity_main.view.assignedById
+import kotlinx.android.synthetic.main.activity_main.view.enterChoreId
+import kotlinx.android.synthetic.main.popup.view.*
 
 class ChoreListActivity : AppCompatActivity() {
 
@@ -39,6 +47,7 @@ class ChoreListActivity : AppCompatActivity() {
         layoutManager = LinearLayoutManager(this)
         adapter = ChoreListAdapter(this, choreListItems!!)
         choreList = dbHandler?.readChores()
+        choreList?.reverse()
 
         for(c in choreList!!.iterator()) {
             val chore = Chore()
@@ -76,14 +85,41 @@ class ChoreListActivity : AppCompatActivity() {
 
         var view = layoutInflater.inflate(R.layout.popup, null)
 
-        var choreName = view.enterChoreId
-        var choreAssignedBy = view.assignedById
-        var assignedTo = view.assignToId
-
-        var saveBtn = view.saveChoreButtonId
+        var choreName = view.popupChoreId
+        var choreAssignedBy = view.popupAssignedById
+        var assignedTo = view.popupAssignToId
+        var saveBtn = view.popupSaveChoreButtonId
 
         dialogBuilder = AlertDialog.Builder(this).setView(view)
         dialog = dialogBuilder!!.create()
         dialog!!.show()
+
+        saveBtn.setOnClickListener{
+
+            var name = choreName.text.toString().trim()
+            var aBy = choreAssignedBy.text.toString().trim()
+            var aTo = assignedTo.text.toString().trim()
+
+            if (!TextUtils.isEmpty(name)
+                && !TextUtils.isEmpty(aBy)
+                && !TextUtils.isEmpty(aTo)
+            ) {
+
+                var chore = Chore()
+                chore.choreName = name
+                chore.assignedBy = aBy
+                chore.assignedTo = aTo
+
+                dbHandler?.createChore(chore)
+
+                dialog?.dismiss()
+
+                startActivity(Intent(this, ChoreListActivity::class.java))
+                finish()
+
+            } else {
+                Toast.makeText(this, "Please enter all chore details", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
