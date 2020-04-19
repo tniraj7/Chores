@@ -1,7 +1,8 @@
 # Chores
-Android application for managing daily tasks. Its made using Kotlin.
+## Android application for managing daily tasks. Its made using Kotlin.
 
-### Previews
-![](preview1.png)  
+### Preview Screens
 
-![](preview2.gif)
+<img src="./preview1.png" width="300" height="650">
+
+<img src="./preview2.png" width="300" height="650">
