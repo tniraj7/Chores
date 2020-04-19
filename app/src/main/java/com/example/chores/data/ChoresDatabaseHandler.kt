@@ -84,6 +84,7 @@
                 if (cursor.moveToFirst()) {
                     do {
                         var chore = Chore()
+                        chore.choreId =  cursor.getInt(cursor.getColumnIndex(KEY_ID))
                         chore.choreName = cursor.getString(cursor.getColumnIndex(KEY_CHORE_NAME))
                         chore.assignedTo = cursor.getString(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_TO))
                         chore.assignedBy = cursor.getString(cursor.getColumnIndex(KEY_CHORE_ASSIGNED_BY))
@@ -111,11 +112,10 @@
             return  db.update(TABLE_NAME, values, KEY_ID + "=?", arrayOf(chore.choreId.toString()))
         }
 
-        fun deleteChore(chore: Chore) {
+        fun deleteChore(id: Int) {
 
             var db: SQLiteDatabase = writableDatabase
-
-            db.delete(TABLE_NAME, KEY_ID + "=?", arrayOf(chore.choreId.toString()))
+            db.delete(TABLE_NAME, KEY_ID + "=?", arrayOf(id.toString()))
             db.close()
         }
 
