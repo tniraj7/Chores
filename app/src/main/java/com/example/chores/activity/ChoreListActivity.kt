@@ -1,12 +1,10 @@
 package com.example.chores.activity
 
-import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -18,11 +16,6 @@ import com.example.chores.data.ChoreListAdapter
 import com.example.chores.data.ChoresDatabaseHandler
 import com.example.chores.model.Chore
 import kotlinx.android.synthetic.main.activity_chore_list.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
-import kotlinx.android.synthetic.main.activity_main.view.assignToId
-import kotlinx.android.synthetic.main.activity_main.view.assignedById
-import kotlinx.android.synthetic.main.activity_main.view.enterChoreId
 import kotlinx.android.synthetic.main.popup.view.*
 
 class ChoreListActivity : AppCompatActivity() {
